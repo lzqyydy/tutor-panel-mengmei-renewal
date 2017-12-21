@@ -25,6 +25,9 @@ export default{
     this.socket = io('/mahjong', {
       reconnection: false
     })
+    this.socket.on('message', function(data){
+      console.log(data)
+    })
   }
 }
 </script>
