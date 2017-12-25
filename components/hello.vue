@@ -1,6 +1,7 @@
 <template>
   <div class="hello-wrapper">
     <div class="hello-body">
+      <game-area :data="playdata"></game-area>
       <opening-board v-if="states.openingBoard.display" :players="players" @handled="onPlayerReady"></opening-board>
     </div>
   </div>
@@ -9,6 +10,7 @@
 <script>
 import io from 'socket.io-client'
 
+import gameArea from './game-area.vue'
 import openingBoard from './opening-board.vue'
 
 export default {
@@ -17,6 +19,7 @@ export default {
       token: null,
       socket: null,
       players: null,
+      playdata: {},
       states: {
         openingBoard: {
           display: false,
@@ -25,14 +28,19 @@ export default {
     }
   },
   components: {
+    'game-area': gameArea,
     'opening-board': openingBoard
   },
   methods: {
+    send(message){
+      this.socket.emit('message', Object.assign(message, {
+        token: this.token
+      }))
+    },
     onPlayerReady(){
       this.states.openingBoard.display = false
-      this.socket.emit('message', {
-        type: 'ready',
-        token: this.token
+      this.send({
+        type: 'ready'
       })
     }
   },
@@ -48,6 +56,9 @@ export default {
           this.players = message.data;
           this.states.openingBoard.display = true;
           break;
+        case 'data':
+          this.playdata = message.data;
+          break;
         default: 
           break;
       }
@@ -58,11 +69,18 @@ export default {
 
 <style scoped>
 .hello-wrapper{
+  position: relative;
   width: 100vw;
   height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  background-color: #CCCCCC;
 }
 .hello-body{
-  width: 100vw;
-  height: 100vh;
+  position: relative;
+  width: 100vmin;
+  height: 100vmin;
+  background-color: #FFFFFF;
 }
 </style>

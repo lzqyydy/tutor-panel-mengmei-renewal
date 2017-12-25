@@ -11,10 +11,10 @@ const store = new Vuex.Store({
 
   },
   actions: {
-    connect(){
+    connect(context, data){
 
     },
-    send(){
+    send(context, data){
 
     }
   },
