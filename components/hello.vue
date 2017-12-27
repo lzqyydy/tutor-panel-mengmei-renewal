@@ -107,6 +107,11 @@ export default {
           break;
         case 'result':
           console.log('result:', message.data)
+          setTimeout(()=>{
+            this.send({
+              type: 'ack'
+            })
+          }, delayTime)
           break;
         default: 
           break;
