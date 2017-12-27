@@ -1,13 +1,13 @@
 <template>
   <div class="game-area-wrapper">
     <div class="game-area-body">
-      <div class="game-area-round"></div>
+      <div class="game-area-round">{{compRound}}</div>
       <div class="game-area-player" v-for="i in 4" :key="`gamearea-${i}`">
-        <div class="game-area-score"></div>
-        <div class="game-area-discarded"></div>
+        <div class="game-area-score">{{compPosition(i)}}{{data.score[i-1]}}</div>
+        <div class="game-area-discarded">{{data.discarded[i-1]}}</div>
         <div class="game-area-playarea">
-          <div class="game-area-handtile"></div>
-          <div class="game-area-furotile"></div>
+          <div class="game-area-handtile">{{data.handtile[i-1]}}</div>
+          <div class="game-area-furo">{{data.furo[i-1]}}</div>
         </div>
       </div>
     </div>
@@ -18,12 +18,27 @@
 export default {
   data(){
     return {
+      dictionary: {
+        round: ['东１局','东２局','东３局','东４局','南１局','南２局','南３局','南４局','西１局','西２局','西３局','西４局'],
+        position: ['东','南','西','北'],
+        tile: ['一万','二万','三万','四万','五万','六万','七万','八万','九万','一条','二条','三条','四条','五条','六条','七条','八条','九条','一筒','二筒','三筒','四筒','五筒','六筒','七筒','八筒','九筒','东','西','南','北','白','发','中']
+      }
     }
   },
   props: {
     data:{
       type: Object
     }
+  },
+  methods:{
+    compPosition(i){
+      return this.dictionary.position[this.data.position[i-1]]
+    }
+  },
+  computed: {
+    compRound(){
+      return this.dictionary.round[this.data.round]
+    },
   },
   mounted(){
   }
