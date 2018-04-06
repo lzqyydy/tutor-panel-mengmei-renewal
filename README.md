@@ -1,1 +1,0 @@
-#write4self-frontend
